@@ -46,6 +46,13 @@ function agregarAlCarrito(id) {
         carrito.push(producto);
         guardarCarritoEnStorage();
         mostrarCarrito();
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Producto agregado al carrito",
+            showConfirmButton: false,
+            timer: 1250
+            });
     }
 }
 
@@ -91,7 +98,11 @@ function agregarNuevoProducto() {
 
 
     if (isNaN(nuevoPrecio)) {
-        alert("Por favor, ingrese un precio válido.");
+        Swal.fire({
+            icon: "error",
+            title: "Precio no valido",
+            text: "Por favor ingrese un precio valido",
+            });
         return;
     }
 
@@ -119,7 +130,12 @@ function eliminarProducto() {
 
 
     if (isNaN(idEliminar)) {
-        alert("Por favor, ingrese un ID válido.");
+        
+        Swal.fire({
+            icon: "error",
+            title: "ID no encontrado",
+            text: "Por favor ingrese un ID valido",
+            });
         return;
     }
 
@@ -131,20 +147,41 @@ function eliminarProducto() {
 
         productos.splice(index, 1);
 
-
         guardarProductosEnStorage();
-
-
+        
         buscar();
     } else {
-        alert("No se encontró ningún producto con el ID especificado.");
+        Swal.fire({
+            icon: "error",
+            title: "Producto no encontrado",
+            text: "Por favor ingrese un ID valido",
+            });
     }
 }
 
 function vaciarCarrito() {
-    carrito = [];
-    guardarCarritoEnStorage();
-    mostrarCarrito();
+    Swal.fire({
+        title: "Quieres borrar carrito?",
+        text: "Tu carrito será vaciado",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                carrito = [];
+                guardarCarritoEnStorage();
+                
+                mostrarCarrito();
+            Swal.fire({
+                title: "Carrito Vaciado",
+                icon: "success"
+                
+            });
+            }
+        });
+    
 }
 
 window.addEventListener("load", function () {
